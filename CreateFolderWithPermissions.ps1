@@ -1,4 +1,4 @@
-param([string]$username, [string]$path, [string]$name)
+param([Parameter(Mandatory=$true)] [string]$username, [string]$path, [string]$name)
 $instance = dbinstance
 $db = reportserver
 $query = 'exec sp_make_new_dir @DIRNAME = "'+$name+'", @DIRPATH = "'+$path+'", @USERNAME = "'+$username+'"'
