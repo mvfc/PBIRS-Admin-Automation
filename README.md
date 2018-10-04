@@ -7,3 +7,5 @@ The PS script changes the folder permissions so that the username gets admin acc
 To run it, use the following command in PowerShell:
 
 CreateFolderWithPermissions.ps1 -username username -path dirpath -name dirname
+
+You can find the files inside the Scripts folder
