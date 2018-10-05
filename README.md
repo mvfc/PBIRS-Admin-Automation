@@ -1,11 +1,25 @@
-The stored procedure lets you create a new directory on your PowerBI Report Server (change the DB name on line 1)
+This project aims to automate some aspects of the administration of a Power BI Report Server (PBIRS, for short), like giving permissions, revoking access, or even creating a folder with applied permissions.
 
-It uses the native function that PBIRS uses for creating the dir (CreateObject), it searches/generates the necessary parameters, all you need to set is the name of your new dir(ex: production), the path for your new dir (ex: /bi/marketing) and it will make the final path for you (ex: /bi/marketing/production). You also give it the username of the dir owner, and that's it.
+It uses TSQL for the stored procedures and PowerShell scripts for some of the automation tasks.
 
-The PS script changes the folder permissions so that the username gets admin access to its own folder (Content Manager role) and invokes the stored procedure, so all you need to do is run the script passing the path, username and name of the new dir to be created.
+Since the administration of a PBIRS is based mostly on databases, there's also stored procedures that call the PowerShell scripts so you can automate it all from a DBMS or any systems that interact with a SQL Server database.
 
-To run it, use the following command in PowerShell:
+All of the scripts are in the /Scripts/ folder of this project.
 
-CreateFolderWithPermissions.ps1 -username username -path dirpath -name dirname
+createfolderwithpermissionspbi.ps1 - PS script that creates a folder and assigns the Content Manager role for the user that's passed to it (It will be the "owner" of the folder, the user who created it and the one who gets Content Manager as default)
 
-You can find the files inside the Scripts folder
+grantaccess.ps1 - PS script that grants the Browser role on a given folder to a given user
+
+revokeaccess.ps1 - PS script that revokes all access from the given folder to a given user
+
+sp_call_create_folder_with_perms.sql - TSQL stored procedure that calls the createfolderwithpermissionspbi.ps1 PS script
+
+sp_call_grant_access.sql - TSQL stored procedure that calls the sp_call_grant_access.sql script
+
+sp_call_revoke_access.sql - TSQL stored procedure that calls the sp_call_revoke_access.sql script
+
+sp_make_new_dir.sql - TSQL stored procedure that makes the dirty work of creating a new folder on said path
+
+With this we automate a few tasks that are usually tedious but frequent and could be automated via some system based on these scripts.
+
+Hope you enjoy this!
